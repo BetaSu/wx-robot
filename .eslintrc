@@ -1,0 +1,8 @@
+{
+  "extends": "think",
+  "rules": {
+    "semi": [0, "always"],
+    "no-console": 0,
+    "no-return-await": 0
+  }
+}
