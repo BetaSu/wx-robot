@@ -36,3 +36,4 @@ app/
 db/
 config.development.js
 adapter.development.js
+.vscode

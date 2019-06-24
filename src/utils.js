@@ -31,9 +31,39 @@ const getWxAccountFromContent = content => {
   return match[1];
 }
 
+// 鉴权
+const getAuth = (userInfo) => {
+  const defaultAuth = {
+    login: false,
+    sendMsg: false,
+    task: false,
+    analyse: false,
+    handleRobot: false
+  }
+  if (!userInfo) return defaultAuth;
+
+  // 普通用户可以 登录、发送消息
+  defaultAuth.login = true;
+  defaultAuth.sendMsg = true;
+
+  const {userMail} = userInfo;
+  const AUTH_ADMIN = (think.config('AUTH_ADMIN') || '').split(',');
+  const AUTH_TASK = (think.config('AUTH_TASK') || '').split(',');
+
+  // 管理员完全权限
+  if (userMail && AUTH_ADMIN.includes(userMail)) {
+    Object.assign(defaultAuth).forEach(key => { defaultAuth[key] = true });
+  }
+  if (userMail && AUTH_TASK.includes(userMail)) {
+    defaultAuth.task = true;
+  }
+  return defaultAuth;
+}
+
 module.exports = {
   restartServer,
   mail,
   warning,
-  getWxAccountFromContent
+  getWxAccountFromContent,
+  getAuth
 }

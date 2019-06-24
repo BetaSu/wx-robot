@@ -31,6 +31,9 @@
         <p>命令行调用：curl --data "to={}&msg={}&token={}" robot.qiwoo.org/robot/say</p>
         <Api :default="defaultAPIOptions"/>
       </el-collapse-item>
+      <el-collapse-item v-if="showTask" title="定时任务" name="4">
+        <Interval :defaultData="defaultAPIOptions"/>
+      </el-collapse-item>
     </el-collapse>
   </div>
   <div class="process empty" v-else>
@@ -42,15 +45,17 @@
 <script>
 import {getUserData, setWxAccount, logout} from '@/fetch'
 import Api from '../items/api'
+import Interval from '../items/interval'
 
 export default {
   name: 'Process',
-  components: {Api},
+  components: {Api, Interval},
   data() {
       return {
         wxAccount: '',
         displayName: '',
         finishStep: 0,
+        showTask: false,
         token: null,
         isLogin: true,
         defaultAPIOptions: {}
@@ -82,10 +87,11 @@ export default {
     }
   },
   mounted() {
-     getUserData().then(({data: {displayName, wxAccount, token}} = {data: {}}) => {
+     getUserData().then(({data: {displayName, wxAccount, token, task}} = {data: {}}) => {
       this.displayName = displayName;
       this.wxAccount = wxAccount || '';
       this.token = token || '';
+      this.showTask = task;
       this.defaultAPIOptions = {token}
     })
   }

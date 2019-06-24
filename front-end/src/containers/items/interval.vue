@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-collapse v-model="activeName" accordion>
-            <IntervalFragment v-for="(item, index) in intervalList" :options="item" :index="index" :key="item.id || index"></IntervalFragment>
+            <IntervalFragment v-for="(item, index) in intervalList" :options="item" :defaultData="defaultData" :index="index" :key="item.id || index"></IntervalFragment>
         </el-collapse>
         <el-button class="add-btn" v-if="!hasUnsavedInterval" @click="addInterval" size="mini" plain>添加</el-button>
     </div>
@@ -16,9 +16,16 @@ export default {
   components: {
     IntervalFragment
   },
+  props: {
+    defaultData: {
+      type: Object,
+      default () {return {}},
+      required: false
+    }
+  },
   computed: {
       intervalList() {
-          return this.$store.state.intervalList
+          return this.$store.state.intervalList;
       }
   },
   data() {

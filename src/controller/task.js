@@ -1,10 +1,11 @@
-const LoginBase = require('./base.js');
+const LoginBase = require('./login-base.js');
 const codeMap = require('../codeMap');
 
 module.exports = class extends LoginBase {
   async __before() {
-    const isLogin = await LoginBase.prototype.__before.call(this);
-    if (isLogin === false) {
+    const {login, task} = await LoginBase.prototype.__before.call(this);
+
+    if (!login || !task) {
       const errCode = 901;
       return this.fail(errCode, codeMap[errCode]);
     }

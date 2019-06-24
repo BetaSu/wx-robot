@@ -3,9 +3,8 @@ const codeMap = require('../codeMap');
 
 module.exports = class extends LoginBase {
   async __before() {
-    const isLogin = await LoginBase.prototype.__before.call(this);
-    const ADMIN = think.config('ADMIN');
-    if (isLogin === false || !ADMIN || ADMIN.indexOf(this.ctx.userData.userMail) === -1) {
+    const {login} = await LoginBase.prototype.__before.call(this);
+    if (!login) {
       const errCode = 901;
       return this.fail(errCode, codeMap[errCode]);
     }

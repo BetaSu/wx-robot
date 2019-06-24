@@ -4,8 +4,8 @@ const auth = require('../fake-auth');
 
 module.exports = class extends LoginBase {
   async __before() {
-    const isLogin = await LoginBase.prototype.__before.call(this);
-    if (isLogin === false) {
+    const {login} = await LoginBase.prototype.__before.call(this);
+    if (!login) {
       const errCode = 901;
       return this.fail(errCode, codeMap[errCode]);
     }
@@ -14,7 +14,10 @@ module.exports = class extends LoginBase {
   indexAction() {
     const {isGet} = this.ctx;
     if (!isGet) return this.fail('只支持get');
-    return this.success(this.ctx.userData);
+    const extraData = {};
+    const {task} = this.ctx.authData;
+    extraData.task = task;
+    return this.success(Object.assign(this.ctx.userData, extraData));
   }
   async setWxAccountAction() {
     const {isPost} = this.ctx;
@@ -39,10 +42,11 @@ module.exports = class extends LoginBase {
   }
 
   async searchAction() {
-    const {isGet, userData: {userMail}} = this.ctx;
+    const {isGet} = this.ctx;
     if (!isGet) return this.fail('只支持get');
-    const ADMIN = think.config('ADMIN');
-    if (!ADMIN || ADMIN.indexOf(userMail) === -1) {
+
+    const {analyse} = this.ctx.authData;
+    if (!analyse) {
       const errCode = 901;
       return this.fail(errCode, codeMap[errCode]);
     }

@@ -57,6 +57,11 @@ export default {
         index: {
             type: Number,
             required: true
+        },
+        defaultData: {
+            type: Object,
+            default () {return {}},
+            required: false
         }
     },
     data() {
@@ -109,7 +114,9 @@ export default {
             this.options.taskList.push({
                 type: 'api',
                 name: null,
-                params: {},
+                params: {
+                    token: this.defaultData.token
+                },
                 _id: `task-${Math.floor(Math.random() * 10000)}`
             })
         },

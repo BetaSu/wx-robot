@@ -11,10 +11,9 @@ module.exports = class extends LoginBase {
     this.ctx.bot = bot;
     // 发送消息接口不验证登录
     if (this.ctx.request.url === '/robot/say') return;
-    const isLogin = await LoginBase.prototype.__before.call(this);
+    const {login, handleRobot} = await LoginBase.prototype.__before.call(this);
     // robot相关接口需要登录且是管理员
-    const ADMIN = think.config('ADMIN');
-    if (isLogin === false || !ADMIN || ADMIN.indexOf(this.ctx.userData.userMail) === -1) {
+    if (!login || !handleRobot) {
       const errCode = 901;
       return this.fail(errCode, codeMap[errCode]);
     }
