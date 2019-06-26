@@ -152,7 +152,6 @@ export default {
         saveTask() {
             const data = this.options
             if (!data.frequency) return this.$message.warning('请填写频率')
-            if (data.frequency === 'everytime' && !data.week) return this.$message.warning('请选择星期')
             if (!data.date) return this.$message.warning('请填写时间')
             if (!data.taskList.length) return this.$message.warning('请添加至少一个任务')
             if (data.taskList.some(task => {

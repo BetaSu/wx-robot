@@ -52,7 +52,7 @@ const getAuth = (userInfo) => {
 
   // 管理员完全权限
   if (userMail && AUTH_ADMIN.includes(userMail)) {
-    Object.assign(defaultAuth).forEach(key => { defaultAuth[key] = true });
+    Object.keys(defaultAuth).forEach(key => { defaultAuth[key] = true });
   }
   if (userMail && AUTH_TASK.includes(userMail)) {
     defaultAuth.task = true;

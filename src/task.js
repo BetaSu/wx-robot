@@ -57,7 +57,7 @@ module.exports = class TaskHandler {
   async registerEverytimeTask(week, date, data, _id) {
     date = new Date(date);
     const rule = new schedule.RecurrenceRule();
-    rule.dayOfWeek = week;
+    week && (rule.dayOfWeek = week);
     rule.hour = date.getHours();
     rule.minute = date.getMinutes();
     rule.second = date.getSeconds();
