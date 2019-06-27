@@ -36,7 +36,7 @@ export const getTask = () => axios.get(api.task);
 export const createTask = data => axios.post(api.task, data);
 
 // 删除任务
-export const delTask = id => axios.delete(api.task, api.task, {params: {id}});
+export const delTask = id => axios.delete(api.task, {data: {id}});
 
 // 修改任务
 export const setTask = data => axios.put(api.task, data);

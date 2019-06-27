@@ -20,8 +20,9 @@ module.exports = class extends LoginBase {
     }
     // 删除任务列表
     if (this.isMethod('DELETE')) {
-      const id = this.get('id');
+      const id = this.post('id');
       const result = await this.ctx.state.model.delTask(id)
+      if (!result) return this.fail();
       return this.success(result);
     }
     // 新建任务

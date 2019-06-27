@@ -19,6 +19,7 @@ module.exports = class extends think.Mongo {
   }
   async delTask(_id) {
     const result = await this.where({ _id }).delete();
+    if (!result) return result;
     const task = await getTaskInstance();
     task.update({
       action: 'delete',
@@ -47,7 +48,7 @@ module.exports = class extends think.Mongo {
   }
   async markRunningTime(taskId, itemId) {
     const data = await this.getTask(taskId);
-    if (!data) return
+    if (!data || !Array.isArray(data.taskList)) return
     data.taskList.forEach(item => {
       if (item._id === itemId) {
         const runningTime = think.isNumber(item.runningTime) ? item.runningTime++ : 1;
